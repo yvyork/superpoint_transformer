@@ -40,7 +40,7 @@ conda install python=$PYTHON -y
 echo "⭐ Installing pip and Conda packages"
 conda install pip nb_conda_kernels -y
 pip install matplotlib plotly==5.9.0 "jupyterlab>=3" "ipywidgets>=7.6" jupyter-dash
-pip install notebook=6.5.6 ipykernel torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
+pip install notebook==6.5.6 ipykernel torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
 pip install torchmetrics==0.11.4 pyg_lib torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
 pip install torch_geometric==2.3.0 plyfile h5py colorhash seaborn numba pytorch-lightning pyrootutils
 pip install hydra-core --upgrade hydra-colorlog hydra-submitit-launcher rich torch_tb_profiler wandb open3d gdown ipyfilechooser
