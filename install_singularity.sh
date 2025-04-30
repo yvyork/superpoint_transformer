@@ -39,31 +39,11 @@ conda install python=$PYTHON -y
 # Install dependencies
 echo "⭐ Installing pip and Conda packages"
 conda install pip nb_conda_kernels -y
-pip install matplotlib
-pip install plotly==5.9.0
-pip install "jupyterlab>=3" "ipywidgets>=7.6" jupyter-dash
-pip install "notebook>=5.3" "ipywidgets>=7.5"
-pip install ipykernel
-pip3 install torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_MAJOR}${CUDA_MINOR}
-pip install torchmetrics==0.11.4
-pip install pyg_lib torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_MAJOR}${CUDA_MINOR}.html
-pip install torch_geometric==2.3.0
-pip install plyfile
-pip install h5py
-pip install colorhash
-pip install seaborn
-pip install numba
-pip install pytorch-lightning
-pip install pyrootutils
-pip install hydra-core --upgrade
-pip install hydra-colorlog
-pip install hydra-submitit-launcher
-pip install rich
-pip install torch_tb_profiler
-pip install wandb
-pip install open3d
-pip install gdown
-pip install ipyfilechooser
+pip install matplotlib plotly==5.9.0 "jupyterlab>=3" "ipywidgets>=7.6" jupyter-dash
+pip install notebook=6.5.6 ipykernel torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
+pip install torchmetrics==0.11.4 pyg_lib torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
+pip install torch_geometric==2.3.0 plyfile h5py colorhash seaborn numba pytorch-lightning pyrootutils
+pip install hydra-core --upgrade hydra-colorlog hydra-submitit-launcher rich torch_tb_profiler wandb open3d gdown ipyfilechooser
 
 # Install FRNN
 echo "⭐ Installing FRNN"
