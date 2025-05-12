@@ -4,14 +4,13 @@
 CONDA_DIR=${1:-/opt/conda}
 
 # Config
-PROJECT_NAME=base
 PYTHON=3.8
 TORCH=2.2.0
 CUDA_SUPPORTED=("11.8" "12.1")
 
 # Sanity check for Conda
 if [ ! -d "$CONDA_DIR" ]; then
-  echo "Conda directory not found at $CONDA_DIR"
+  echo "❌ Conda directory not found at $CONDA_DIR"
   exit 1
 fi
 
@@ -24,7 +23,7 @@ cd "$HERE"
 echo "⭐ Checking for supported CUDA"
 CUDA_VERSION=$(nvcc --version | grep release | sed 's/.* release //' | sed 's/,.*//')
 if [[ ! " ${CUDA_SUPPORTED[*]} " =~ " ${CUDA_VERSION} " ]]; then
-  echo "Found CUDA ${CUDA_VERSION}, but expected one of: ${CUDA_SUPPORTED[*]}"
+  echo "❌ Found CUDA ${CUDA_VERSION}, but expected one of: ${CUDA_SUPPORTED[*]}"
   exit 1
 fi
 
@@ -36,16 +35,20 @@ conda activate base
 # Ensure Python version
 conda install python=$PYTHON -y
 
-# Install dependencies
-echo "⭐ Installing pip and Conda packages"
+# Install pip and conda helper
 conda install pip nb_conda_kernels -y
 
-# Only pin versions where needed (Torch and CUDA compatibility critical)
-pip install matplotlib plotly jupyterlab ipywidgets jupyter-dash
-pip install notebook ipykernel torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
-pip install torchmetrics pyg_lib torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
-pip install torch_geometric plyfile h5py colorhash seaborn numba pytorch-lightning pyrootutils
-pip install hydra-core hydra-colorlog hydra-submitit-launcher rich torch_tb_profiler wandb open3d gdown ipyfilechooser
+# ✅ Install general packages first (default PyPI)
+echo "⭐ Installing general Python packages from default index"
+pip install matplotlib plotly jupyterlab ipywidgets jupyter-dash notebook ipykernel \
+    torchmetrics pyg_lib torch_geometric plyfile h5py colorhash seaborn numba \
+    pytorch-lightning pyrootutils hydra-core hydra-colorlog hydra-submitit-launcher \
+    rich torch_tb_profiler wandb open3d gdown ipyfilechooser
+
+# ✅ Install PyTorch and CUDA-specific packages (with dedicated indexes)
+echo "⭐ Installing PyTorch and CUDA-specific packages"
+pip install torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
+pip install torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
 
 # Install FRNN
 echo "⭐ Installing FRNN"
@@ -55,6 +58,7 @@ cd .. && python setup.py install
 cd "$HERE"
 
 # Fix for pgeof
+echo "⭐ Installing point_geometric_features"
 conda install -c conda-forge libstdcxx-ng -y
 pip install git+https://github.com/drprojects/point_geometric_features.git
 
