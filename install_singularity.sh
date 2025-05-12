@@ -38,17 +38,18 @@ conda install python=$PYTHON -y
 # Install pip and conda helper
 conda install pip nb_conda_kernels -y
 
-# ✅ Install general packages first (default PyPI)
+# ✅ Install general packages first (from PyPI)
 echo "⭐ Installing general Python packages from default index"
 pip install matplotlib plotly jupyterlab ipywidgets jupyter-dash notebook ipykernel \
-    torchmetrics pyg_lib torch_geometric plyfile h5py colorhash seaborn numba \
-    pytorch-lightning pyrootutils hydra-core hydra-colorlog hydra-submitit-launcher \
-    rich torch_tb_profiler wandb open3d gdown ipyfilechooser
+    torchmetrics==0.11.4 \
+    plyfile h5py colorhash seaborn numba pytorch-lightning pyrootutils \
+    hydra-core hydra-colorlog hydra-submitit-launcher rich torch_tb_profiler wandb open3d gdown ipyfilechooser
 
 # ✅ Install PyTorch and CUDA-specific packages (with dedicated indexes)
 echo "⭐ Installing PyTorch and CUDA-specific packages"
 pip install torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
-pip install torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
+pip install torch_scatter torch_cluster pyg_lib -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
+pip install torch_geometric -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
 
 # Install FRNN
 echo "⭐ Installing FRNN"
