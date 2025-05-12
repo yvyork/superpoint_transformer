@@ -33,17 +33,19 @@ echo "⭐ Activating Conda at $CONDA_DIR"
 source "$CONDA_DIR/etc/profile.d/conda.sh"
 conda activate base
 
-# Optional: Set Python version
+# Ensure Python version
 conda install python=$PYTHON -y
 
 # Install dependencies
 echo "⭐ Installing pip and Conda packages"
 conda install pip nb_conda_kernels -y
-pip install matplotlib plotly==5.9.0 "jupyterlab>=3" "ipywidgets>=7.6" jupyter-dash
+
+# Only pin versions where needed (Torch and CUDA compatibility critical)
+pip install matplotlib plotly jupyterlab ipywidgets jupyter-dash
 pip install notebook ipykernel torch==${TORCH} torchvision --index-url https://download.pytorch.org/whl/cu${CUDA_VERSION/./}
-pip install torchmetrics==0.11.4 pyg_lib torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
-pip install torch_geometric==2.3.0 plyfile h5py colorhash seaborn numba pytorch-lightning pyrootutils
-pip install hydra-core --upgrade hydra-colorlog hydra-submitit-launcher rich torch_tb_profiler wandb open3d gdown ipyfilechooser
+pip install torchmetrics pyg_lib torch_scatter torch_cluster -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_VERSION/./}.html
+pip install torch_geometric plyfile h5py colorhash seaborn numba pytorch-lightning pyrootutils
+pip install hydra-core hydra-colorlog hydra-submitit-launcher rich torch_tb_profiler wandb open3d gdown ipyfilechooser
 
 # Install FRNN
 echo "⭐ Installing FRNN"
