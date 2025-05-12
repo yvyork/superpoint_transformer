@@ -54,8 +54,16 @@ pip install torch_geometric -f https://data.pyg.org/whl/torch-${TORCH}+cu${CUDA_
 # Install FRNN
 echo "⭐ Installing FRNN"
 git clone --recursive https://github.com/lxxue/FRNN.git src/dependencies/FRNN
-cd src/dependencies/FRNN/external/prefix_sum && python setup.py install
-cd .. && python setup.py install
+
+# Install prefix_sum first
+cd src/dependencies/FRNN/external/prefix_sum
+python setup.py install
+
+# Now go back to FRNN root and install FRNN itself
+cd ../../  # Now at src/dependencies/FRNN
+python setup.py install
+
+# Back to your project root
 cd "$HERE"
 
 # Fix for pgeof
