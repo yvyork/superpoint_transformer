@@ -104,11 +104,11 @@ git clone --recursive https://github.com/lxxue/FRNN.git src/dependencies/FRNN
 
 # install a prefix_sum routine first
 cd src/dependencies/FRNN/external/prefix_sum
-python setup.py install
+python setup.py build_ext --inplace
 
-# install FRNN
+# build FRNN in-place
 cd ../../ # back to the {FRNN} directory
-python setup.py install
+python setup.py build_ext --inplace
 cd ../../../
 
 echo
